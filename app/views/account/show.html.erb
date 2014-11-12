@@ -1,0 +1,42 @@
+<h1>Your Account</h1>
+
+<dl class="dl-horizontal">
+  <dt>Name:</dt>
+  <dd><%= current_user.name %></dd>
+
+  <dt>Email:</dt>
+  <dd><%= current_user.email %></dd>
+
+  <dt>Password:</dt>
+  <dd><%= current_user.encrypted_password.present? ? "********" : "Not set" %></dd>
+  
+  <dt>Sign in count:</dt>
+  <dd><%= current_user.sign_in_count %></dd>
+
+  <dt>Current sign in at:</dt>
+  <dd><%= current_user.current_sign_in_at %></dd>
+
+  <dt>Last sign in at:</dt>
+  <dd><%= current_user.last_sign_in_at %></dd>
+
+  <dt>Created at:</dt>
+  <dd><%= current_user.created_at %></dd>
+
+  <dt>Updated at:</dt>
+  <dd><%= current_user.updated_at %></dd>
+</dl>
+
+<% if current_user.identities %>
+  <h3>Account Identities <small>used for 3rd party authentication</small></h3>
+<% end %>
+<%= current_user.identities.map(&:provider).join("<br>").html_safe %>
+
+<h3>LinkedIn Profile</h3>
+<% if current_user.profile? %>
+  <pre><%= current_user.profile %></pre>
+<% else %>
+  <p>Your profile is not available. Please connect your account with LinkedIn
+    in order to load your profile information.</p>
+
+  <%= link_to 'Connect to LinkedIn', user_omniauth_authorize_path(:linkedin), class: 'btn btn-primary btn-lg' %>
+<% end %>
